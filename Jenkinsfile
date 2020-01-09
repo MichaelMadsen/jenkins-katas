@@ -3,9 +3,9 @@ pipeline {
   stages {
     stage('Parallel stuff') {
       parallel {
-        stage('say hello') {
+        stage('say test') {
           steps {
-            echo 'Hello world'
+            echo 'Hello test!'
           }
         }
 
