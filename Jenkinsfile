@@ -1,29 +1,20 @@
-pipeline {
-  agent any
-  stages {
+node { 
     stage('Parallel stuff') {
-      parallel {
-        stage('say test') {
-          steps {
-            echo 'Hello test!'
-          }
-        }
-
-        stage('build app') {
-          agent {
-            docker {
-              image 'gradle:jdk11'
+        parallel (
+            "Say hello" : {
+                stage ('Say hello') {
+                    echo "hello"
+                }
+            },
+            "build app" : {
+                docker.image('gradle:jdk11').inside {
+                    stage('Test') {
+                        git 'https://github.com/praqma-training/jenkins-katas.git'
+                        sh 'ci/build-app.sh'
+                        archiveArtifacts 'app/build/libs/'
+                    }
+                }
             }
-
-          }
-          steps {
-            sh 'ci/build-app.sh'
-            archiveArtifacts 'app/build/libs/'
-          }
-        }
-
-      }
+        )
     }
-
-  }
 }
