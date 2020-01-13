@@ -11,7 +11,7 @@ dockerImages.each {
     mapOfStages["${it}"] = { 
         docker.image("${it}").inside {
             stage("${it}") {
-                git 'https://github.com/praqma-training/jenkins-katas.git'
+                git branch: 'master', url: 'https://github.com/praqma-training/jenkins-katas.git'
                 sh 'ci/build-app.sh'
                 archiveArtifacts 'app/build/libs/'
             }
